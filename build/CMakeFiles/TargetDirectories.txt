@@ -1,0 +1,3 @@
+/workspaces/Sentinel-AI-Engine/build/CMakeFiles/SentinelAI.dir
+/workspaces/Sentinel-AI-Engine/build/CMakeFiles/edit_cache.dir
+/workspaces/Sentinel-AI-Engine/build/CMakeFiles/rebuild_cache.dir
