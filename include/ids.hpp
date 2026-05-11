@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
+#include "logger.hpp"
 
 class IDS {
 public:
-    IDS();
-    bool detectAnomaly(const std::string& state);
+    void detect(const std::string& state, const std::string& action);
 };

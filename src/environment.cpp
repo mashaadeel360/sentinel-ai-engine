@@ -1,11 +1,14 @@
 #include "environment.hpp"
 
-Environment::Environment() {}
-
 std::string Environment::getState() {
     return "default_state";
 }
 
-void Environment::update() {
-    // Placeholder for environment update logic
+double Environment::getReward(const std::string& state, const std::string& action) {
+    if (action == "move_forward") return 1.0;
+    return 0.0;
+}
+
+std::string Environment::nextState(const std::string& state, const std::string& action) {
+    return "default_state"; // placeholder
 }

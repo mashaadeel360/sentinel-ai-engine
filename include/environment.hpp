@@ -3,7 +3,7 @@
 
 class Environment {
 public:
-    Environment();
     std::string getState();
-    void update();
+    double getReward(const std::string& state, const std::string& action);
+    std::string nextState(const std::string& state, const std::string& action);
 };
