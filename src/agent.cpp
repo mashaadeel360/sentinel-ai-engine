@@ -1,7 +1,7 @@
 #include "agent.hpp"
 
 Agent::Agent()
-    : actions({"move_forward", "turn_left", "turn_right"}),
+    : actions({"UP", "RIGHT", "DOWN", "LEFT"}),
       alpha(0.1), gamma(0.9), epsilon(0.2),
       rng(std::random_device{}()), dist(0.0, 1.0) {}
 

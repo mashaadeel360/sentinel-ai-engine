@@ -13,24 +13,34 @@ int main() {
     Optimizer opt;
     IDS ids;
 
-    std::string state = env.getState();
-    Logger::log(Logger::INFO, "Initial State: " + state);
+    int max_episodes = 5; // Train for 5 episodes as a test
 
-    std::string action = agent.chooseAction(state);
-    Logger::log(Logger::INFO, "Agent Action: " + action);
+    for (int episode = 1; episode <= max_episodes; ++episode) {
+        Logger::log(Logger::INFO, "--- Starting Episode " + std::to_string(episode) + " ---");
+        
+        std::string state = env.reset();
+        bool done = false;
+        int steps = 0;
 
-    std::string optimizedAction = opt.optimize(action);
-    Logger::log(Logger::INFO, "Optimized Action: " + optimizedAction);
+        while (!done && steps < 100) { // 100 step limit to prevent infinite wandering
+            std::string action = agent.chooseAction(state);
+            std::string optimizedAction = opt.optimize(action); // Note: returns "optimized_action" which will break movement until opt is fixed to return valid directions!
+            
+            // For now, bypass the optimizer stub so the agent can actually move:
+            optimizedAction = action; 
 
-    double reward = env.getReward(state, optimizedAction);
-    std::string nextState = env.nextState(state, optimizedAction);
+            StepResult result = env.step(optimizedAction);
 
-    Logger::log(Logger::INFO, "Reward: " + std::to_string(reward));
-    Logger::log(Logger::INFO, "Next State: " + nextState);
+            agent.update(state, optimizedAction, result.reward, result.next_state);
+            ids.detect(state, optimizedAction);
 
-    agent.update(state, optimizedAction, reward, nextState);
-
-    ids.detect(state, optimizedAction);
+            state = result.next_state;
+            done = result.done;
+            steps++;
+        }
+        
+        Logger::log(Logger::INFO, "Episode finished in " + std::to_string(steps) + " steps.");
+    }
 
     Logger::log(Logger::INFO, "SentinelAI Engine Finished.");
     return 0;

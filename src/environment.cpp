@@ -20,11 +20,31 @@ std::string Environment::getState() {
 
 
 StepResult Environment::step(const std::string& action) {
-   Position next_pos = agent_pos;
-   
-   if(action == "UP") next_pos.y -=1;
-   else if (action == "RIGHT") next_pos.x +=1;
-   else
+    Position next_pos = agent_pos;
+
+    if(action == "UP") next_pos.y -=1;
+    else if (action == "RIGHT") next_pos.x +=1;
+    else if (action == "DOWN") next_pos.y += 1;
+    else if (action == "LEFT") next_pos.x -= 1;
+
+    //wall collision check
+    bool hit_wall = false;
+    for (const auto& wall:walls){
+        if(next_pos == wall){
+        hit_wall = true;
+        break;
+        }
+    }
+    //movement
+    if(!hit_wall && 
+        next_pos.x >= 0 && next_pos.x < grid_size &&
+        next_pos.y >= 0 && next_pos.y < grid_size) {
+        agent_pos = next_pos;
+    }
+
+    bool done = (agent_pos == goal_pos);
+    double reward = done ? 1.0 : -0.01;
+    return {getState(), reward, done};
 }
 
 double Environment::getReward(const std::string& state, const std::string& action) {
